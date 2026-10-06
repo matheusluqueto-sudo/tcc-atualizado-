@@ -1,0 +1,1 @@
+<!doctype html><html lang="pt-BR"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="css/app.css"><title><?= e($title) ?></title><body><main class="container"><section class="card"><h1><?= e($title) ?></h1><p><?= e($message) ?></p><a href="login.php">Tentar novamente</a></section></main></body></html>

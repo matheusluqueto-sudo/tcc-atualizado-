@@ -1,0 +1,1 @@
+<section class="card empty"><h2><?= e($title) ?></h2><p><?= e($message ?? 'Página não encontrada.') ?></p><a class="button" href="<?= $admin ? 'home.php' : 'homefunc.php' ?>">Voltar ao início</a></section>

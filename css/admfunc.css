@@ -1,0 +1,608 @@
+/* ========================================
+   RESET
+======================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+/* ========================================
+   HTML / BODY
+======================================== */
+
+html,
+body {
+    width: 100%;
+    min-height: 100%;
+}
+
+body {
+    font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+    background: #f7f5e8;
+    color: #222;
+}
+
+
+/* ========================================
+   CONTAINER PRINCIPAL
+======================================== */
+
+.container-home {
+    width: 100%;
+    min-height: 100vh;
+
+    display: flex;
+
+    overflow: hidden;
+
+    background:
+        radial-gradient(
+            circle at 75% 20%,
+            rgba(113, 55, 168, 0.08),
+            transparent 35%
+        ),
+        #f7f5e8;
+}
+
+
+/* ========================================
+   LADO ESQUERDO
+======================================== */
+
+.lado-esquerdo {
+    position: relative;
+
+    width: 50%;
+    height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            135deg,
+            #26063b 0%,
+            #4b0b70 45%,
+            #6d1da0 100%
+        );
+
+    box-shadow:
+        10px 0 40px rgba(39, 7, 62, 0.18);
+}
+
+
+/* brilho decorativo */
+
+.lado-esquerdo::before {
+    content: "";
+
+    position: absolute;
+
+    width: 500px;
+    height: 500px;
+
+    border-radius: 50%;
+
+    background: rgba(181, 71, 255, 0.15);
+
+    filter: blur(90px);
+
+    top: -180px;
+    left: -120px;
+}
+
+
+/* brilho inferior */
+
+.lado-esquerdo::after {
+    content: "";
+
+    position: absolute;
+
+    width: 450px;
+    height: 450px;
+
+    border-radius: 50%;
+
+    background: rgba(255, 193, 7, 0.08);
+
+    filter: blur(100px);
+
+    bottom: -200px;
+    right: -150px;
+}
+
+
+/* ========================================
+   LOGO
+======================================== */
+
+.logo-box {
+    position: relative;
+    z-index: 2;
+
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    overflow: hidden;
+}
+
+.logo-box img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+    object-position: center;
+
+    transition: transform 0.6s ease;
+}
+
+.logo-box:hover img {
+    transform: scale(1.015);
+}
+
+
+/* ========================================
+   LADO DIREITO
+======================================== */
+
+.lado-direito {
+    position: relative;
+
+    width: 50%;
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 50px;
+
+    background:
+        radial-gradient(
+            circle at 50% 35%,
+            rgba(113, 55, 168, 0.07),
+            transparent 45%
+        ),
+        #f7f5e8;
+}
+
+
+/* ========================================
+   CONTEÚDO
+======================================== */
+
+.conteudo-home {
+    width: 100%;
+    max-width: 560px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+/* ========================================
+   TÍTULO
+======================================== */
+
+.titulo-home {
+    width: 100%;
+
+    text-align: center;
+
+    margin-bottom: 30px;
+}
+
+.titulo-home h1 {
+    margin-bottom: 10px;
+
+    font-size: clamp(28px, 3vw, 38px);
+
+    font-weight: 800;
+
+    letter-spacing: -0.8px;
+
+    color: #202020;
+}
+
+.titulo-home p {
+    font-size: 14px;
+
+    font-weight: 600;
+
+    letter-spacing: 1.5px;
+
+    text-transform: uppercase;
+
+    color: #7137a8;
+}
+
+
+/* ========================================
+   CAIXA DOS BOTÕES
+======================================== */
+
+.menu-funcionarios {
+    position: relative;
+
+    width: 100%;
+
+    padding: 45px 50px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 18px;
+
+    border: 1px solid rgba(113, 55, 168, 0.14);
+
+    border-radius: 18px;
+
+    background: rgba(255, 255, 255, 0.58);
+
+    box-shadow:
+        0 20px 50px rgba(55, 24, 75, 0.08),
+        0 4px 15px rgba(0, 0, 0, 0.04);
+
+    backdrop-filter: blur(12px);
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.menu-funcionarios:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 25px 60px rgba(55, 24, 75, 0.12),
+        0 5px 20px rgba(0, 0, 0, 0.05);
+}
+
+
+/* ========================================
+   BOTÕES
+======================================== */
+
+.botao {
+    position: relative;
+
+    width: 100%;
+    max-width: 390px;
+
+    height: 52px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    overflow: hidden;
+
+    border: none;
+    border-radius: 10px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #7137a8 0%,
+            #843fc0 50%,
+            #632a94 100%
+        );
+
+    color: #ffffff;
+
+    text-decoration: none;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    letter-spacing: 0.2px;
+
+    box-shadow:
+        0 8px 18px rgba(113, 55, 168, 0.25);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        filter 0.25s ease;
+}
+
+
+/* brilho do botão */
+
+.botao::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: -120%;
+
+    width: 80%;
+    height: 100%;
+
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.20),
+        transparent
+    );
+
+    transform: skewX(-20deg);
+
+    transition: left 0.6s ease;
+}
+
+
+/* hover */
+
+.botao:hover {
+    transform: translateY(-3px);
+
+    filter: brightness(1.08);
+
+    box-shadow:
+        0 12px 25px rgba(113, 55, 168, 0.35);
+}
+
+.botao:hover::before {
+    left: 140%;
+}
+
+
+/* clique */
+
+.botao:active {
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 6px 15px rgba(113, 55, 168, 0.25);
+}
+
+
+/* ========================================
+   BOTÃO VOLTAR
+======================================== */
+
+.voltar {
+    margin-top: 38px;
+}
+
+.voltar a {
+    position: relative;
+
+    color: #555;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    text-decoration: none;
+
+    transition:
+        color 0.25s ease;
+}
+
+.voltar a::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    bottom: -4px;
+
+    width: 0;
+    height: 2px;
+
+    border-radius: 10px;
+
+    background: #7137a8;
+
+    transition: width 0.25s ease;
+}
+
+.voltar a:hover {
+    color: #7137a8;
+}
+
+.voltar a:hover::after {
+    width: 100%;
+}
+
+
+/* ========================================
+   FOCO / ACESSIBILIDADE
+======================================== */
+
+.botao:focus-visible,
+.voltar a:focus-visible {
+    outline: 3px solid rgba(113, 55, 168, 0.3);
+
+    outline-offset: 4px;
+}
+
+
+/* ========================================
+   RESPONSIVIDADE
+======================================== */
+
+@media (max-width: 1100px) {
+
+    .lado-esquerdo {
+        width: 45%;
+    }
+
+    .lado-direito {
+        width: 55%;
+
+        padding: 40px;
+    }
+
+    .menu-funcionarios {
+        padding: 40px 35px;
+    }
+}
+
+
+/* ========================================
+   TABLET
+======================================== */
+
+@media (max-width: 900px) {
+
+    .container-home {
+        flex-direction: column;
+
+        min-height: 100vh;
+
+        overflow-y: auto;
+    }
+
+
+    /* LOGO */
+
+    .lado-esquerdo {
+        width: 100%;
+        height: 360px;
+        min-height: 360px;
+
+        box-shadow:
+            0 10px 35px rgba(39, 7, 62, 0.15);
+    }
+
+
+    /* DIREITA */
+
+    .lado-direito {
+        width: 100%;
+
+        min-height: auto;
+
+        padding: 60px 30px;
+    }
+
+
+    .conteudo-home {
+        max-width: 560px;
+    }
+}
+
+
+/* ========================================
+   CELULAR
+======================================== */
+
+@media (max-width: 600px) {
+
+    .lado-esquerdo {
+        height: 270px;
+        min-height: 270px;
+    }
+
+
+    .lado-direito {
+        padding: 45px 18px;
+    }
+
+
+    .titulo-home {
+        margin-bottom: 24px;
+    }
+
+
+    .titulo-home h1 {
+        font-size: 27px;
+
+        letter-spacing: -0.5px;
+    }
+
+
+    .titulo-home p {
+        font-size: 12px;
+
+        letter-spacing: 1px;
+    }
+
+
+    .menu-funcionarios {
+        padding: 35px 20px;
+
+        gap: 15px;
+
+        border-radius: 15px;
+    }
+
+
+    .botao {
+        max-width: 100%;
+
+        height: 50px;
+
+        font-size: 13px;
+    }
+
+
+    .voltar {
+        margin-top: 30px;
+    }
+
+
+    .voltar a {
+        font-size: 13px;
+    }
+}
+
+
+/* ========================================
+   CELULARES PEQUENOS
+======================================== */
+
+@media (max-width: 380px) {
+
+    .lado-esquerdo {
+        height: 230px;
+        min-height: 230px;
+    }
+
+
+    .lado-direito {
+        padding: 35px 15px;
+    }
+
+
+    .titulo-home h1 {
+        font-size: 24px;
+    }
+
+
+    .menu-funcionarios {
+        padding: 30px 15px;
+    }
+}
+
+
+/* ========================================
+   REDUÇÃO DE MOVIMENTO
+======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
