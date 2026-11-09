@@ -6,7 +6,7 @@ class AppController
     private bool $admin;
     private string $page;
     private const ADMIN = ['home','cadastro','funcionarios','editarfunc','excluirfunc','informacoes','adicionarepi','relatorios','estoque','pedidos','atualizarpedido','fazerpedidos','salvarpedido','compras','movimentacoes','excluirmovimentacao','andamento'];
-    private const EMPLOYEE = ['homefunc','meuepi','solicitar','minhassolicitacoes'];
+    private const EMPLOYEE = ['homefunc','meuepi','solicitar','minhassolicitacoes','conscientizacao'];
     public function handle(string $page): void {
         $this->page = $page;
         try {
@@ -54,7 +54,7 @@ class AppController
                 $data['history'] = $this->model->history($id);
             }
             if ($page === 'perfil') $data['person'] = $this->user;
-            $views = ['home'=>'dashboard','homefunc'=>'dashboard','andamento'=>'requests','pedidos'=>'requests','minhassolicitacoes'=>'requests','cadastro'=>'person-form','editarfunc'=>'person-form','perfil'=>'person-form','funcionarios'=>'employees','informacoes'=>'equipment','meuepi'=>'equipment','adicionarepi'=>'order-form','solicitar'=>'order-form','fazerpedidos'=>'order-form','estoque'=>'stock','compras'=>'purchases','movimentacoes'=>'history','relatorios'=>'reports','excluirfunc'=>'delete'];
+            $views = ['home'=>'dashboard','homefunc'=>'dashboard','andamento'=>'requests','pedidos'=>'requests','minhassolicitacoes'=>'requests','conscientizacao'=>'conscientizacao','cadastro'=>'person-form','editarfunc'=>'person-form','perfil'=>'person-form','funcionarios'=>'employees','informacoes'=>'equipment','meuepi'=>'equipment','adicionarepi'=>'order-form','solicitar'=>'order-form','fazerpedidos'=>'order-form','estoque'=>'stock','compras'=>'purchases','movimentacoes'=>'history','relatorios'=>'reports','excluirfunc'=>'delete'];
             $this->page = $page;
             $this->render($views[$page] ?? 'message',$data);
         } catch (Throwable $e) {
@@ -64,7 +64,7 @@ class AppController
             require __DIR__ . '/../Views/unavailable.php';
         }
     }
-    private function titles(): array { return ['home'=>'Visão geral','homefunc'=>'Meu painel','cadastro'=>'Cadastrar funcionário','funcionarios'=>'Funcionários','editarfunc'=>'Editar funcionário','informacoes'=>'Informações do funcionário','excluirfunc'=>'Excluir funcionário','adicionarepi'=>'Entregar EPI','relatorios'=>'Relatórios','estoque'=>'Estoque de EPIs','pedidos'=>'Solicitações dos funcionários','fazerpedidos'=>'Novo pedido de compra','compras'=>'Compras','movimentacoes'=>'Movimentações','andamento'=>'Em andamento','meuepi'=>'Meu EPI','solicitar'=>'Solicitar EPI','minhassolicitacoes'=>'Minhas solicitações','perfil'=>'Meu perfil']; }
+    private function titles(): array { return ['home'=>'Visão geral','homefunc'=>'Meu painel','cadastro'=>'Cadastrar funcionário','funcionarios'=>'Funcionários','editarfunc'=>'Editar funcionário','informacoes'=>'Informações do funcionário','excluirfunc'=>'Excluir funcionário','adicionarepi'=>'Entregar EPI','relatorios'=>'Relatórios','estoque'=>'Estoque de EPIs','pedidos'=>'Solicitações dos funcionários','fazerpedidos'=>'Novo pedido de compra','compras'=>'Compras','movimentacoes'=>'Movimentações','andamento'=>'Em andamento','meuepi'=>'Meu EPI','solicitar'=>'Solicitar EPI','minhassolicitacoes'=>'Minhas solicitações','conscientizacao'=>'Conscientização','perfil'=>'Meu perfil']; }
     private function render(string $view, array $data): void {
         extract($data);
         $user = $this->user; $admin = $this->admin; $page = $this->page;

@@ -195,3 +195,127 @@ td form { margin:0; }
 .password-toggle .eye-slash { display:none; }
 .password-toggle[aria-pressed="true"] .eye-slash { display:block; }
 .password-field input::-ms-reveal { display:none; }
+
+
+/* Biblioteca de conscientização dos funcionários */
+.awareness-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 28px;
+    padding: 30px 34px;
+    margin-bottom: 26px;
+    color: #fff;
+    background: linear-gradient(115deg, #652792, #8749b6);
+    border: 1px solid #ffffff20;
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+.awareness-banner .eyebrow { color: #f0d9ff; }
+.awareness-banner h2 {
+    margin: 9px 0 5px;
+    color: #fff;
+    font-size: clamp(21px, 3vw, 29px);
+    letter-spacing: -.5px;
+}
+.awareness-banner p {
+    max-width: 720px;
+    margin: 0;
+    color: #eadcf5;
+    font-size: 13px;
+}
+.awareness-total {
+    display: flex;
+    flex: 0 0 132px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 112px;
+    border: 1px solid #ffffff45;
+    border-radius: 18px;
+    background: #ffffff12;
+}
+.awareness-total strong { color: #fff; font-size: 39px; line-height: 1.1; }
+.awareness-total span { margin-top: 5px; color: #f0e2f7; font-size: 10px; }
+.awareness-section { min-width: 0; }
+.awareness-section-heading { margin-bottom: 17px; }
+.awareness-section-heading p { margin: 4px 0 0; font-size: 12px; }
+.awareness-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+}
+.video-card {
+    min-width: 0;
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    box-shadow: 0 5px 18px #30204008;
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+.video-card:hover {
+    transform: translateY(-2px);
+    border-color: #d7c4e5;
+    box-shadow: 0 9px 24px #30204012;
+}
+.video-card-heading {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px 17px;
+}
+.video-number {
+    display: grid;
+    flex: 0 0 38px;
+    width: 38px;
+    height: 38px;
+    place-items: center;
+    color: var(--primary);
+    background: #f1e8f8;
+    border-radius: 11px;
+    font-size: 12px;
+    font-weight: 800;
+}
+.video-card-heading h3 { margin: 0; color: var(--ink); font-size: 13px; }
+.video-card-heading span:not(.video-number) { display: block; margin-top: 2px; color: var(--muted); font-size: 10px; }
+.video-frame {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #21162a;
+}
+.video-frame iframe {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+.video-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 16px;
+    border-top: 1px solid #f0edf4;
+}
+.video-card-footer span { color: var(--muted); font-size: 10px; }
+.video-card-footer a { flex-shrink: 0; font-size: 10px !important; }
+@media (max-width: 760px) {
+    .awareness-grid { grid-template-columns: 1fr; gap: 17px; }
+    .awareness-banner { padding: 25px; }
+}
+@media (max-width: 520px) {
+    .awareness-banner { align-items: flex-start; flex-direction: column; }
+    .awareness-total { flex: 0 0 auto; min-height: 0; width: 100%; flex-direction: row; gap: 9px; padding: 10px 14px; }
+    .awareness-total strong { font-size: 24px; }
+    .awareness-total span { margin: 0; }
+    .awareness-section-heading { align-items: flex-start; flex-direction: column; }
+    .video-card-footer { align-items: flex-start; flex-direction: column; gap: 8px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .video-card { transition: none; }
+    .video-card:hover { transform: none; }
+}
