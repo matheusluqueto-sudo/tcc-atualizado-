@@ -1,62 +1,225 @@
-# EPI Control
 
-Aplicação PHP 8.1+ / MariaDB 10.4+ para gestão de equipamentos de proteção individual. Extensões: mysqli e mbstring; curl para os testes HTTP.
+# EPI Control — Sistema de Gestão de EPIs
 
-## Executar no XAMPP
+Projeto de Conclusão de Curso (TCC), desenvolvido para o Curso Técnico em Desenvolvimento de Sistemas do SENAI Ourinhos (2026).
 
-1. Inicie Apache e MySQL no painel do XAMPP.
-2. Para uma instalação nova, crie o banco `tcc` vazio no phpMyAdmin e importe **`database/tcc.sql`**. Esse arquivo já contém toda a estrutura e os dados, incluindo as quantidades das solicitações. Se o banco já foi configurado com esse SQL, não precisa importar novamente.
-3. Abra `http://localhost/TCC%20-%20Little/`. O início encaminha para o painel do perfil autenticado.
+O **EPI Control** é uma aplicação web para organizar funcionários, Equipamentos de Proteção Individual (EPIs), solicitações, entregas, compras, estoque e movimentações.
 
-### Arquivo único do banco
+## Tecnologias e requisitos
 
-`database/tcc.sql` é a única fonte SQL do projeto. Qualquer alteração futura de estrutura ou dos dados distribuídos deve ser feita diretamente nesse arquivo, sem criar scripts SQL paralelos. O sistema utiliza o banco MySQL por meio de `config/conexao.php`; não importa o arquivo automaticamente a cada acesso. O SQL é um dump completo para importação em banco vazio, não um atualizador automático de bancos existentes.
+- **Backend:** PHP 8.1+ com `mysqli` e organização MVC.
+- **Frontend:** HTML, CSS e JavaScript.
+- **Banco de dados:** MySQL / MariaDB.
+- **Ambiente local:** XAMPP com Apache e MySQL/MariaDB.
+- **Testes HTTP:** extensões PHP `mysqli`, `mbstring` e `curl` e servidor PHP para testes.
 
-`config/conexao.php` usa por padrão `127.0.0.1`, usuário `root`, senha vazia, banco `tcc`, portas 3306 e 3307. É possível configurar `DB_HOST`, `DB_USER`, `DB_PASSWORD`, `DB_NAME` e `DB_PORT` no ambiente. A conta administrativa de demonstração presente no SQL original é `admin@epicontrol.com` / `123456`; altere-a no perfil ao usar o sistema.
+## Organização dos arquivos
 
-## Organização MVC
+- `app/Models/EpiModel.php`: consultas ao banco, movimentações e regras de negócio.
+- `app/Controllers/AppController.php`: autenticação, autorização, validações e ações.
+- `app/Views/`: telas exibidas ao usuário.
+- `app/bootstrap.php` e `app/dispatch.php`: inicialização e encaminhamento das rotas.
+- `templates/`: cabeçalho e rodapé comuns.
+- `css/app.css` e `js/app.js`: estilos e interações principais.
+- `config/conexao.php`: conexão com o MySQL, sem credenciais de produção.
+- `database/tcc.sql`: estrutura e dados fictícios para demonstração e testes.
+- `tests/integration.php`: testes de integração.
+- `docs/`: imagens de telas utilizadas na documentação.
 
-- `app/Models/EpiModel.php`: consultas preparadas, persistência, transações de entrega/compra e regras de estoque.
-- `app/Controllers/AppController.php`: autenticação, autorização por papel, validação, ações POST e escolha das views.
-- `app/Views/`: conteúdo das telas e componentes de tabelas/gráficos.
-- `templates/header.php` e `templates/footer.php`: layout compartilhado. A navegação horizontal muda conforme o papel do usuário.
-- `app/bootstrap.php`: sessão, carregamento e helpers de apresentação; `app/dispatch.php`: entrada do controlador.
-- `database/tcc.sql`: estrutura e dados do banco, compartilhados pela instalação e pelos testes. Consultas da aplicação permanecem no Model, sem SQL nos templates ou nas views.
-- Arquivos PHP na raiz: entradas compatíveis com os endereços antigos. `css/app.css` e `js/app.js`: interface responsiva e interações atuais. Os antigos CSS/JS foram preservados, mas não são carregados pelo novo layout.
+## Instalação local com XAMPP
 
-## Perfis e telas
+1. Coloque o projeto na pasta `htdocs/epi-control` do XAMPP.
+2. Ligue **Apache** e **MySQL** no painel do XAMPP.
+3. No phpMyAdmin, crie um banco vazio chamado `tcc`, com codificação `utf8mb4`.
+4. Importe o arquivo `database/tcc.sql` nesse banco vazio.
+5. Verifique `config/conexao.php`. Os padrões locais são `127.0.0.1`, `root`, senha vazia, banco `tcc` e porta `3306`.
+6. Abra `http://localhost/epi-control/` no navegador. Se a pasta tiver outro nome, adapte o endereço.
+7. Para acessar o sistema, use as contas de demonstração criadas pelo SQL exclusivamente em ambiente local.
 
-**Funcionário:** início com resumo pessoal, avisos e solicitações recentes; Meu EPI com equipamentos, quantidade, CA, descrição, mapa interativo de proteção e histórico; Solicitar EPI; Minhas solicitações; Perfil.
+**Importante:** o SQL deste repositório é adequado para instalar um banco novo e vazio. Não deve ser importado sobre um banco existente com dados reais.
 
-**Administrador:** dashboard com indicadores e gráfico; cadastro, busca, edição e exclusão de funcionários; consulta e entrega de EPIs por funcionário; relatórios filtrados por funcionário e impressão/PDF pelo navegador; estoque; gestão de solicitações; pedidos de reposição; compras; entradas/saídas; acompanhamento em andamento; Perfil.
+## Configuração segura para hospedagem (InfinityFree)
 
-As permissões são conferidas no servidor em todas as rotas, inclusive ações antigas. O funcionário nunca escolhe o titular da solicitação: o ID vem da sessão. O administrador não utiliza as páginas pessoais de EPI do funcionário. Ambos acessam o próprio perfil.
+O arquivo `config/conexao.php` não contém sua senha da hospedagem.
 
-## Regras do sistema
+Para configurar o ambiente hospedado, crie somente no servidor o arquivo `config/conexao.local.php` com este conteúdo, substituindo pelos dados que aparecem no painel do seu provedor:
 
-- Solicitação: **Pendente → Aprovada → Em andamento → Entregue**. Uma aprovada também pode ser entregue diretamente. A recusa é permitida enquanto não finalizada. Aprovação não reserva estoque; apenas a entrega registra saída e baixa o saldo. Sem saldo, toda a operação é revertida.
-- Compra: **Pendente → Comprado / Não comprado**. “Comprado” confirma também o recebimento físico, gerando uma entrada de estoque. Reenvios não duplicam entradas/saídas. Uma compra finalizada não é editável.
-- Entrega direta: registrada em Funcionários → Ver EPIs → Entregar EPI, com quantidade e motivo.
-- Exclusão: exige formulário POST com confirmação. Funcionários com entregas ou solicitações não podem ser excluídos, preservando o histórico.
-- Foto: `tb_funcionarios.foto_url` armazena `img/boy.png` ou `img/woman.png`, escolhidos explicitamente no cadastro, edição ou perfil. Não se infere gênero pelo nome. Registros sem foto usam avatar neutro. Também é possível capturar uma selfie ou escolher uma foto; a imagem é reduzida para 480 × 480 e salva em `uploads/avatars`. A câmera exige localhost ou HTTPS e permissão do navegador.
-- “Meu EPI” mostra quantidades acumuladas de entregas, não saldo líquido após devoluções. O projeto não tem fluxo de devolução/descarte. O mapa é educativo, com regiões para olhos, ouvidos, rosto, mãos, cabeça, tronco e pés; itens não reconhecidos orientam consultar as instruções do equipamento.
-- Senhas novas usam `password_hash`. Senhas em texto do banco legado são convertidas no próximo login válido. A alteração pelo próprio usuário exige a senha atual. Recuperação é feita pelo administrador na edição do funcionário; as páginas antigas de recuperação redirecionam ao login porque não havia envio de e-mail configurado.
-- O catálogo de tipos de EPI é o já cadastrado no banco. O estoque é atualizado pelas compras recebidas e entregas.
+```php
+<?php
+return [
+    'host' => 'HOST_DO_BANCO',
+    'user' => 'USUARIO_DO_BANCO',
+    'password' => 'SENHA_DO_BANCO',
+    'database' => 'NOME_DO_BANCO',
+    'port' => 3306,
+];
+```
 
-## Verificação automatizada
+**Nunca publique `conexao.local.php` no GitHub.**
 
-`tests/integration.php` **recria exclusivamente o banco descartável `epi_control_test`**. Não execute com esse nome reservado para dados reais. O teste importa somente `database/tcc.sql` e verifica os dados importados, os fluxos e as permissões por HTTP.
+Adicione a seguinte linha ao arquivo `.gitignore` na raiz do repositório:
 
-Em um MySQL de teste, inicie um servidor PHP separado com `DB_NAME=epi_control_test` e `DB_PORT` da instância de teste; por exemplo, no PowerShell:
+```gitignore
+/config/conexao.local.php
+```
+
+Se o site já está funcionando na hospedagem, não troque o arquivo de conexão do site antes de preparar e testar essa configuração privada.
+
+Como alternativa, o código reconhece as variáveis de ambiente `DB_HOST`, `DB_USER`, `DB_PASSWORD`, `DB_NAME` e `DB_PORT` quando disponíveis. Elas têm prioridade sobre o arquivo local.
+
+## Funcionalidades
+
+### Administrador
+
+- Autenticação de usuários.
+- Cadastro e gerenciamento de funcionários.
+- Edição e consulta de informações cadastrais.
+- Exclusão condicionada às regras de negócio.
+- Inativação e reativação de funcionários.
+- Consulta e entrega de EPIs.
+- Gerenciamento de estoque.
+- Acompanhamento de solicitações.
+- Pedidos de compra de equipamentos.
+- Registro de entradas e saídas.
+- Acompanhamento de processos.
+- Consulta de relatórios administrativos.
+- Gerenciamento de perfil.
+
+### Funcionário
+
+- Autenticação e acesso ao painel pessoal.
+- Solicitação de EPIs.
+- Acompanhamento das solicitações.
+- Consulta dos equipamentos recebidos.
+- Mapa educativo interativo de proteção corporal.
+- Consulta ao histórico de equipamentos.
+- Visualização de informações do perfil.
+
+## Regras de negócio relevantes
+
+- As permissões são verificadas no servidor, de acordo com o perfil autenticado.
+- Funcionários com entregas ou solicitações registradas não podem ser excluídos; a inativação preserva o histórico e impede o acesso.
+- Uma entrega efetiva de EPI reduz o estoque e registra uma saída.
+- Uma compra marcada como **Comprado** confirma o recebimento do pedido e registra uma entrada de estoque; a mesma compra não deve gerar entradas duplicadas.
+- Os status de solicitações incluem `Pendente`, `Aprovada`, `Em andamento`, `Entregue` e `Recusada`, conforme a etapa do processo.
+- O mapa de EPIs tem finalidade informativa e não substitui a avaliação de segurança do trabalho.
+
+### Melhorias futuras
+
+Entre as funcionalidades previstas para possíveis atualizações estão:
+
+- Leitura de equipamentos por QR Code.
+- Assinatura eletrônica para confirmação de entregas.
+- Alertas automáticos de vencimento dos EPIs.
+- Ampliação das ferramentas de análise e relatórios.
+
+Essas funcionalidades não foram identificadas como recursos ativos na versão analisada.
+
+## Banco de dados
+
+O banco de dados do EPI Control utiliza MySQL e possui oito tabelas principais e auxiliares:
+
+- `tb_funcionarios`
+- `tb_epis`
+- `tb_solicitacoes`
+- `tb_pedidos`
+- `tb_entrada`
+- `tb_saida`
+- `if_solicitacao`
+- `recuperacao_senha`
+
+O arquivo `database/tcc.sql` contém a estrutura do banco de dados, incluindo relacionamentos, índices e a coluna `status_funcionario`.
+
+Os registros incluídos no SQL são fictícios e mínimos, destinados a demonstrações locais e testes. Eles não comprovam a exigência acadêmica de 20 registros por tabela.
+
+Para verificar os registros utilizados no ambiente hospedado, deve-se consultar o banco de dados do servidor.
+
+**Atenção:** nunca publique CPFs, e-mails ou senhas reais de funcionários em um repositório público.
+
+### Banco existente no InfinityFree
+
+Não execute o arquivo SQL completo sobre o banco de produção.
+
+Antes de qualquer alteração estrutural, faça uma cópia de segurança.
+
+Para verificar a existência da coluna `status_funcionario`, utilize:
+
+```sql
+SHOW COLUMNS FROM tb_funcionarios LIKE 'status_funcionario';
+```
+
+Se a coluna ainda não existir, poderá ser utilizada a seguinte instrução:
+
+```sql
+ALTER TABLE tb_funcionarios
+ADD COLUMN status_funcionario ENUM('Ativo','Inativo')
+NOT NULL DEFAULT 'Ativo'
+AFTER nivel_acesso;
+```
+
+Execute esse comando somente se a coluna não existir.
+
+## Testes de integração
+
+O projeto possui um arquivo de testes de integração localizado em:
+
+`tests/integration.php`
+
+Os testes contemplam verificações relacionadas às regras de negócio, ao banco de dados e ao controle de acesso.
+
+**Importante:** o arquivo de testes apaga e recria o banco `epi_control_test`. Portanto, deve ser utilizado somente em um ambiente de testes, nunca na hospedagem de produção.
+
+Os testes pressupõem um servidor HTTP local e um banco de dados separado.
+
+### Exemplo de configuração
+
+No PowerShell, ajuste as variáveis de ambiente para uma instância MySQL de testes:
 
 ```powershell
+$env:DB_HOST = '127.0.0.1'
+$env:DB_USER = 'root'
+$env:DB_PASSWORD = ''
 $env:DB_PORT = '3318'
 $env:DB_NAME = 'epi_control_test'
 php -S 127.0.0.1:8098 -t .
 ```
 
-Em outro terminal com as mesmas variáveis, execute `php tests/integration.php`. Configure `TEST_URL` se usar outro endereço HTTP. A pasta de sessões do PHP precisa ser gravável. Os testes não necessitam do Apache; os bloqueios `.htaccess` de diretórios internos aplicam-se ao Apache.
+Em outro terminal, com as mesmas variáveis de ambiente, execute:
 
-Validação realizada: 75 verificações de integração aprovadas, sintaxe de todos os PHP válida e interface conferida em desktop e celular. Prévias com dados do banco descartável em `docs/`.
+```powershell
+php tests/integration.php
+```
 
-Na página Movimentações, o administrador pode excluir um registro com confirmação. Essa ação remove apenas o histórico, sem estornar o saldo de estoque; saídas excluídas deixam de compor os equipamentos recebidos.
+A porta `3318` é apenas um exemplo e deve ser substituída pela porta configurada para o banco de testes.
+
+Os resultados devem ser registrados após a execução no ambiente utilizado.
+
+## Cuidados com dados e segurança
+
+- Nunca envie ao GitHub senhas da hospedagem ou credenciais reais.
+- Não publique dados pessoais de funcionários.
+- Não utilize contas e senhas de demonstração no sistema hospedado.
+- Se credenciais já foram publicadas anteriormente, altere-as.
+- Faça backups do banco de dados antes de realizar modificações.
+- Utilize configurações de conexão específicas para cada ambiente.
+- Mantenha o código do repositório atualizado em relação ao sistema hospedado.
+
+## Objetivo do projeto
+
+O EPI Control foi desenvolvido com o objetivo de demonstrar como a tecnologia pode contribuir para a organização dos processos relacionados à gestão de Equipamentos de Proteção Individual.
+
+A plataforma procura centralizar informações, facilitar o controle de estoque, melhorar o acompanhamento das solicitações e permitir a consulta do histórico dos equipamentos entregues aos funcionários.
+
+O projeto representa a aplicação prática de conhecimentos adquiridos durante o Curso Técnico em Desenvolvimento de Sistemas do SENAI Ourinhos.
+
+## Equipe de desenvolvimento
+
+- Amanda Noemi Ferroni
+- Giovana Maximiano Della Tonia
+- Matheus dos Santos Luqueto
+
+**Instituição:** SENAI Ourinhos
+
+**Curso:** Técnico em Desenvolvimento de Sistemas
+
+**Ano:** 2026
